@@ -1,0 +1,169 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(uuid())
+  name            String    @db.VarChar(100)
+  userName        String    @unique @db.VarChar(50)
+  email           String    @unique @db.VarChar(255)
+  emailVerifiedAt DateTime?
+  password        String    @db.VarChar(255)
+  surname         String    @db.VarChar(100)
+  identityNo      String?   @db.VarChar(20)
+  avatarImage     String?   @db.VarChar(255)
+
+  // Social media fields
+  socialInstagram                 String? @db.VarChar(100)
+  socialInstagramBroadcastChannel String? @db.VarChar(100)
+  socialFacebook                  String? @db.VarChar(100)
+  socialFacebookGroup             String? @db.VarChar(100)
+  socialFacebookPage              String? @db.VarChar(100)
+  socialYoutube                   String? @db.VarChar(100)
+  socialTiktok                    String? @db.VarChar(100)
+  socialLinkedin                  String? @db.VarChar(100)
+  socialX                         String? @db.VarChar(100)
+  socialWhatsappTelNo             String? @db.VarChar(20)
+  socialWhatsappGroup             String? @db.VarChar(100)
+  socialWhatsappChannel           String? @db.VarChar(100)
+  socialTelegramUsername          String? @db.VarChar(100)
+  socialTelegramGroup             String? @db.VarChar(100)
+  socialTelegramChannel           String? @db.VarChar(100)
+  socialReddit                    String? @db.VarChar(100)
+  socialRedditCommunity           String? @db.VarChar(100)
+
+  // Contact information
+  phoneNo String? @db.VarChar(20)
+
+  role   Role   @relation(fields: [roleId], references: [id])
+  roleId String
+
+  // OAuth fields
+  githubId    String? @db.VarChar(100)
+  googleId    String? @db.VarChar(100)
+  facebookId  String? @db.VarChar(100)
+  instagramId String? @db.VarChar(100)
+
+  // IP tracking
+  registerIp     String? @db.VarChar(45)
+  lastLoggedInIp String? @db.VarChar(45)
+
+  // Audit columns
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isActive  Boolean  @default(true)
+
+  @@index([email])
+  @@index([userName])
+}
+
+model Role {
+  id          String       @id @default(uuid())
+  name        String       @unique
+  permissions Permission[]
+  users       User[]
+}
+
+model Permission {
+  id      String @id @default(uuid())
+  action  String // e.g., "create", "read", "update", "delete"
+  subject String // e.g., "User", "Settings"
+  roles   Role[]
+}
+
+enum KepTitleType {
+  Trader
+  Tradesmen
+}
+
+model Settings {
+  id              String  @id @default(uuid())
+  name            String
+  desc            String?
+  slogan          String?
+  logo            String?
+  favicon         String?
+  about           String?
+  phone           String?
+  faxPhone        String?
+  email           String?
+  physicalAddress String?
+  etbisQrImage    String?
+  etbisLink       String?
+  shipmentPrice   Float?
+
+  // Default images
+  defaultProductImage     String?
+  defaultCategoryImage    String?
+  defaultCategoryIcon     String?
+  defaultBrandImage       String?
+  defaultUserAvatarImage  String?
+  defaultLogoImage        String?
+  defaultCampaignImage    String?
+  defaultSliderImage      String?
+  defaultTestimonialImage String?
+
+  // KEP Information
+  kepTitleType               KepTitleType?
+  kepEmailAddress            String?
+  kepPhoneNo                 String?
+  kepBusinnesFullName        String?
+  kepChamberOfMemberShip     String?
+  kepChamberAddress          String?
+  kepTradeTitle              String?
+  kepMersisNo                String?
+  kepHeadquartersAddress     String?
+  kepFullLegalName           String?
+  kepFullLegalSurname        String?
+  kepTaxIdentificationNumber String?
+
+  // Social Media
+  socialInstagram                 String?
+  socialInstagramBroadcastChannel String?
+  socialFacebook                  String?
+  socialFacebookGroup             String?
+  socialFacebookPage              String?
+  socialYoutube                   String?
+  socialTiktok                    String?
+  socialLinkedin                  String?
+  socialX                         String?
+  socialWhatsappTelNo             String?
+  socialWhatsappGroup             String?
+  socialWhatsappChannel           String?
+  socialTelegramUsername          String?
+  socialTelegramGroup             String?
+  socialTelegramChannel           String?
+  socialReddit                    String?
+  socialRedditCommunity           String?
+
+  // Maps Integration
+  googleMapsEmbed String?
+  yandexMaps      String?
+  appleMaps       String?
+  wazeMaps        String?
+  openStreetMaps  String?
+
+  // Policies
+  transactionGuide   String? @db.Text
+  privacyPolicy      String? @db.Text
+  termsAndConditions String? @db.Text
+  shippingPolicy     String? @db.Text
+  returningPolicy    String? @db.Text
+
+  // Language
+  primaryLang String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

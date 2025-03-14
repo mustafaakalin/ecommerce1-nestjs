@@ -1,0 +1,35 @@
+services:
+  app:
+    build: .
+    ports:
+      - '${APP_PORT:-3011}:3000'
+    environment:
+      APP_NODE_ENV: ${APP_NODE_ENV:-production}
+      TZ: ${TZ:-UTC}  # Set timezone (default to UTC)
+      APP_FALLBACK_LANG_ALL: ${APP_FALLBACK_LANG_ALL:-en}  # Set fallback language (default to en)
+    depends_on:
+      - postgres
+    networks:
+    - akalin-tech-ecommerce1-nestjs-api-network
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: ${TZ:-UTC}
+    ports:
+    - "5439:5432"  # Changed host port to avoid conflict with local PostgreSQL
+    networks:
+    - akalin-tech-ecommerce1-nestjs-api-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+networks:
+  akalin-tech-ecommerce1-nestjs-api-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
