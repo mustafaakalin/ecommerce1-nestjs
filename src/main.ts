@@ -4,21 +4,38 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
-import { ConsoleLogger, ValidationPipe } from '@nestjs/common';
+import { ConsoleLogger, ValidationPipe, VersioningType } from '@nestjs/common';
 import helmet from '@fastify/helmet'; // https://docs.nestjs.com/security/helmet
 import compression from '@fastify/compress'; // https://docs.nestjs.com/techniques/compression#use-with-fastify
 import { Logger } from 'nestjs-pino'; // https://docs.nestjs.com/techniques/logger (Pino Logger)  https://www.npmjs.com/package/nestjs-pino
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+declare const module: any;
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(), // { logger: true } // Enable Fastify logger
+    new FastifyAdapter(),
     { bufferLogs: true },
   );
+  app.enableVersioning({
+    type: VersioningType.URI,
+  });
+  app.useGlobalPipes(new ValidationPipe());
+
+  // TO-DO: Add Swagger
+  // Swagger
+  // const config = new DocumentBuilder()
+  //   .setTitle('Cats example')
+  //   .setDescription('The cats API description')
+  //   .setVersion('1.0')
+  //   .addTag('cats')
+  //   .build();
+  // const documentFactory = () => SwaggerModule.createDocument(app, config);
+  // SwaggerModule.setup('api', app, documentFactory);
 
   app.useLogger(app.get(Logger)) // Enable Pino logger
 
-  app.useGlobalPipes(new ValidationPipe());
 
   await app.register(helmet, {
     // Configure helmet options here (optional)
@@ -61,5 +78,11 @@ async function bootstrap() {
   await app.register(compression, { encodings: ['gzip', 'deflate'] });
 
   await app.listen(3000, '0.0.0.0');
+  console.log(`Application is running on: ${await app.getUrl()} on docker container : 'docker ps'`);
+
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
 bootstrap();

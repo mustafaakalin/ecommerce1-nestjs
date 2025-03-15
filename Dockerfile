@@ -24,6 +24,8 @@ COPY . .
 
 # Build the NestJS application
 RUN pnpm run build
+# for development
+# RUN pnpm run start:dev
 
 # Expose the application port
 EXPOSE 3011

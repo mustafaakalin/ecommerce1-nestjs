@@ -20,6 +20,9 @@ importers:
       '@fastify/helmet':
         specifier: ^13.0.1
         version: 13.0.1
+      '@keyv/redis':
+        specifier: ^4.3.1
+        version: 4.3.1
       '@nestjs-modules/mailer':
         specifier: ^2.0.2
         version: 2.0.2(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(nodemailer@6.10.0)
@@ -74,9 +77,9 @@ importers:
       cache-manager:
         specifier: ^6.4.1
         version: 6.4.1
-      cache-manager-redis-store:
-        specifier: ^3.0.1
-        version: 3.0.1
+      cacheable:
+        specifier: ^1.8.9
+        version: 1.8.9
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -86,9 +89,9 @@ importers:
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
-      ioredis:
-        specifier: ^5.6.0
-        version: 5.6.0
+      keyv:
+        specifier: ^5.3.1
+        version: 5.3.1
       nestjs-i18n:
         specifier: ^10.5.1
         version: 10.5.1(@nestjs/common@11.0.11(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.11)(class-validator@0.14.1)(rxjs@7.8.2)
@@ -195,6 +198,9 @@ importers:
       prisma:
         specifier: ^6.5.0
         version: 6.5.0(typescript@5.8.2)
+      run-script-webpack-plugin:
+        specifier: ^0.2.2
+        version: 0.2.2
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
@@ -216,6 +222,12 @@ importers:
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
+      webpack:
+        specifier: ^5.98.0
+        version: 5.98.0(esbuild@0.25.1)
+      webpack-node-externals:
+        specifier: ^3.0.0
+        version: 3.0.0
 
 packages:
 
@@ -975,6 +987,10 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
+
+  '@keyv/redis@4.3.1':
+    resolution: {integrity: sha512-+UJU9eFBOFbvfg/Om8ajCPa5NxtctpQuE2ElE5Wf7xwbghmhlbLsJ2K4ZEmPnUF0YUolFBJFHd/ukDIvyTA5kw==}
+    engines: {node: '>= 18'}
 
   '@keyv/serialize@1.0.3':
     resolution: {integrity: sha512-qnEovoOp5Np2JDGonIDL6Ayihw0RhnRh6vxPuHo4RDn1UOzwEo4AeIfpL6UGIrsceWrCMiVPgwRjbHu4vYFc3g==}
@@ -1823,12 +1839,11 @@ packages:
     resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
     engines: {node: '>= 0.8'}
 
-  cache-manager-redis-store@3.0.1:
-    resolution: {integrity: sha512-o560kw+dFqusC9lQJhcm6L2F2fMKobJ5af+FoR2PdnMVdpQ3f3Bz6qzvObTGyvoazQJxjQNWgMQeChP4vRTuXQ==}
-    engines: {node: '>= 16.18.0'}
-
   cache-manager@6.4.1:
     resolution: {integrity: sha512-DVy28v0FbeBp2SmFgKTa4o6muKP3T78Id0nht5D6mBAar1Nuc5z4nL6G0jpnEbYq8FS10dtrBNzQri5l9uJ/zA==}
+
+  cacheable@1.8.9:
+    resolution: {integrity: sha512-FicwAUyWnrtnd4QqYAoRlNs44/a1jTL7XDKqm5gJ90wz1DQPlC7U2Rd1Tydpv+E7WAr4sQHuw8Q8M3nZMAyecQ==}
 
   call-bind-apply-helpers@1.0.2:
     resolution: {integrity: sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==}
@@ -2731,6 +2746,9 @@ packages:
   hexoid@2.0.0:
     resolution: {integrity: sha512-qlspKUK7IlSQv2o+5I7yhUd7TxlOG2Vr5LTa3ve2XSNVKAL/n/u/7KLvKmFNimomDIKvZFXWHv0T12mv7rT8Aw==}
     engines: {node: '>=8'}
+
+  hookified@1.8.1:
+    resolution: {integrity: sha512-GrO2l93P8xCWBSTBX9l2BxI78VU/MAAYag+pG8curS3aBGy0++ZlxrQ7PdUOUVMbn5BwkGb6+eRrnf43ipnFEA==}
 
   html-escaper@2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
@@ -4133,6 +4151,10 @@ packages:
 
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
+
+  run-script-webpack-plugin@0.2.2:
+    resolution: {integrity: sha512-6FBCE6gVwGI2BXWyUDI1zwjFimQRe2gW+j4KRnVWpA5oj4aq9n/CFhRlMvsTQsNx7B3eHWkxhZ+jTxjDSlGuYQ==}
+    engines: {node: '>=14'}
 
   rxjs@7.8.1:
     resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
@@ -5657,6 +5679,12 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
+  '@keyv/redis@4.3.1':
+    dependencies:
+      cluster-key-slot: 1.1.2
+      keyv: 5.3.1
+      redis: 4.7.0
+
   '@keyv/serialize@1.0.3':
     dependencies:
       buffer: 6.0.3
@@ -6653,12 +6681,13 @@ snapshots:
 
   bytes@3.1.2: {}
 
-  cache-manager-redis-store@3.0.1:
-    dependencies:
-      redis: 4.7.0
-
   cache-manager@6.4.1:
     dependencies:
+      keyv: 5.3.1
+
+  cacheable@1.8.9:
+    dependencies:
+      hookified: 1.8.1
       keyv: 5.3.1
 
   call-bind-apply-helpers@1.0.2:
@@ -7685,6 +7714,8 @@ snapshots:
   help-me@5.0.0: {}
 
   hexoid@2.0.0: {}
+
+  hookified@1.8.1: {}
 
   html-escaper@2.0.2: {}
 
@@ -9621,6 +9652,8 @@ snapshots:
   run-parallel@1.2.0:
     dependencies:
       queue-microtask: 1.2.3
+
+  run-script-webpack-plugin@0.2.2: {}
 
   rxjs@7.8.1:
     dependencies:
