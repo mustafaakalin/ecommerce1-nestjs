@@ -3,6 +3,7 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+ 
 
 generator client {
   provider = "prisma-client-js"
@@ -46,8 +47,15 @@ model User {
   // Contact information
   phoneNo String? @db.VarChar(20)
 
+  // Role
   role   Role   @relation(fields: [roleId], references: [id])
   roleId String
+
+  // Two-factor authentication
+  twoFactorSecret String?   // For TOTP secret
+  twoFactorEnabled Boolean  @default(false)
+
+  refreshToken    String?   // Hashed refresh token
 
   // OAuth fields
   githubId    String? @db.VarChar(100)
@@ -70,16 +78,29 @@ model User {
 
 model Role {
   id          String       @id @default(uuid())
-  name        String       @unique
-  permissions Permission[]
+  name        String       @unique // e.g., "developer", "shopkeeper", "staff", "customer"
+  permissions Permission[] @relation("RolePermissions")
   users       User[]
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt()
+  deleted_at DateTime? @db.Timestamp()
 }
 
 model Permission {
   id      String @id @default(uuid())
-  action  String // e.g., "create", "read", "update", "delete"
-  subject String // e.g., "User", "Settings"
-  roles   Role[]
+  action  String // e.g., "manage", "read", "update"
+  subject String // e.g., "all", "staff", "customer"
+  roles   Role[] @relation("RolePermissions")
+
+  
+  inverted   Boolean @default(false)
+  conditions Json?   @db.JsonB()
+  reason     String? @db.Text()
+
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt()
+  deleted_at DateTime? @db.Timestamp()
+
 }
 
 enum KepTitleType {

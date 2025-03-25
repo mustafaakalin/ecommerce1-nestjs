@@ -31,4 +31,5 @@ RUN pnpm run build
 EXPOSE 3011
 
 # Command to run the application
-CMD ["node", "dist/main"]
+# CMD ["node", "dist/main"]
+CMD ["pnpm", "run", "start:hmr"]

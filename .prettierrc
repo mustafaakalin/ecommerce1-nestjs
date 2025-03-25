@@ -1,4 +1,9 @@
 {
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
   "singleQuote": true,
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "files.autoSave": "onFocusChange"
 }

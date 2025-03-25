@@ -20,11 +20,12 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import KeyvRedis, { createKeyv } from '@keyv/redis';
 import { Keyv } from 'keyv';
 import { CacheableMemory } from 'cacheable';
+import { CaslModule } from './casl/casl.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.env.${process.env.APP_NODE_ENV || 'development'}`,
+      envFilePath: `.env`,
       isGlobal: true,
       cache: true,
       expandVariables: true,
@@ -56,6 +57,8 @@ import { CacheableMemory } from 'cacheable';
     }),
 
     // Core modules
+
+    AuthModule,
     UsersModule,
 
     // Internationalization with optimized settings
@@ -115,7 +118,7 @@ import { CacheableMemory } from 'cacheable';
 
     SharedModule,
 
-    AuthModule,
+    CaslModule,
   ],
   controllers: [AppController],
   providers: [

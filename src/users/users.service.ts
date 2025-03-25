@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from '../prisma/prisma.service'; // Create this service
+import { User } from '@prisma/client';
+// This should be a real class/interface representing a user entity
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private prisma: PrismaService) {}
+
+
+
+async create(data: { email: string; password: string; roleId: number }): Promise<User> {
+    return this.prisma.user.create({ data });
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(): Promise<User[]> {
+    return this.prisma.user.findMany({ include: { role: true } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number): Promise<User | null> {
+    return this.prisma.user.findUnique({ where: { id }, include: { role: true } });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, data: Partial<User>): Promise<User> {
+    return this.prisma.user.update({ where: { id }, data });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number): Promise<User> {
+    return this.prisma.user.delete({ where: { id } });
   }
+
 }
